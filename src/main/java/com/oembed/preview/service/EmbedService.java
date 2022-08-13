@@ -1,10 +1,12 @@
 package com.oembed.preview.service;
 
+import com.oembed.preview.common.exception.NotSupportedUrlException;
 import com.oembed.preview.dto.OembedResponseDto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,7 +16,7 @@ import java.net.URISyntaxException;
 @Service
 public class EmbedService {
 
-    public OembedResponseDto getOembedResponse(String url) throws ParseException, URISyntaxException {
+    public OembedResponseDto getOembedResponse(String url) throws ParseException, URISyntaxException, NotSupportedUrlException {
         String urlHost = getUrlHost(url);
         JSONArray providers = getProviders();
         String endpointUrl = getEndpointUrl(urlHost, providers);
@@ -60,21 +62,23 @@ public class EmbedService {
      * @param providers
      * @return
      */
-    private String getEndpointUrl(String urlHost, JSONArray providers) {
+    private String getEndpointUrl(String urlHost, JSONArray providers) throws NotSupportedUrlException {
         String endpointUrl = "";
         for(Object o : providers) {
             JSONObject jsonObject = (JSONObject) o;
             String providerUrl = jsonObject.get("provider_url").toString();
 
             if(providerUrl.contains(urlHost)) {
-               JSONArray endpoints = (JSONArray) jsonObject.get("endpoints");
+                JSONArray endpoints = (JSONArray) jsonObject.get("endpoints");
                 JSONObject endpoint = (JSONObject) endpoints.get(0);
                 endpointUrl = endpoint.get("url").toString();
                 break;
             }
         }
 
-        // TODO : exception 처리
+        if(endpointUrl == "") {
+            throw new NotSupportedUrlException(HttpStatus.BAD_REQUEST, "지원하지 않는 URL 입니다.");
+        }
         return endpointUrl;
     }
 

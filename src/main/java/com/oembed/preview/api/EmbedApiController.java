@@ -1,5 +1,6 @@
 package com.oembed.preview.api;
 
+import com.oembed.preview.common.exception.NotSupportedUrlException;
 import com.oembed.preview.service.EmbedService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -17,7 +18,7 @@ public class EmbedApiController {
     private final EmbedService embedService;
 
     @GetMapping("/api/oembed")
-    public ResponseEntity requestHandler(@RequestParam String url) throws ParseException, URISyntaxException {
+    public ResponseEntity requestHandler(@RequestParam String url) throws ParseException, URISyntaxException, NotSupportedUrlException {
         return ResponseEntity.ok().body(embedService.getOembedResponse(url));
     }
 

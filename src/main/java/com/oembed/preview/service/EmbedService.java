@@ -16,6 +16,14 @@ import java.net.URISyntaxException;
 @Service
 public class EmbedService {
 
+    /**
+     * Oembed API 응답을 받아온다.
+     * @param url
+     * @return
+     * @throws ParseException
+     * @throws URISyntaxException
+     * @throws NotSupportedUrlException
+     */
     public OembedResponseDto getOembedResponse(String url) throws ParseException, URISyntaxException, NotSupportedUrlException {
         String urlHost = getUrlHost(url);
         JSONArray providers = getProviders();
@@ -44,7 +52,7 @@ public class EmbedService {
     }
 
     /**
-     * providers.json을 읽어온다.
+     * providers.json을 받아온다.
      * @return
      * @throws ParseException
      */
@@ -57,7 +65,7 @@ public class EmbedService {
     }
 
     /**
-     * providers의 urlHost endpoint를 가져온다..
+     * providers의 urlHost endpoint를 가져온다.
      * @param urlHost
      * @param providers
      * @return

@@ -18,10 +18,7 @@ public class EmbedApiController {
 
     @GetMapping("/api/oembed")
     public ResponseEntity requestHandler(@RequestParam String url) throws ParseException, URISyntaxException {
-
-        embedService.getOembedResponse(url);
-        
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().body(embedService.getOembedResponse(url));
     }
 
  }

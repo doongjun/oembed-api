@@ -1,0 +1,17 @@
+package com.oembed.preview.controller;
+
+import com.oembed.preview.service.EmbedService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@RequiredArgsConstructor
+@Controller
+public class HomeController {
+
+    @GetMapping("/")
+    public String home() {
+        return "home";
+    }
+
+}

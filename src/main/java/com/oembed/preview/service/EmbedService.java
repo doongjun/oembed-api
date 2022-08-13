@@ -1,5 +1,6 @@
 package com.oembed.preview.service;
 
+import com.oembed.preview.dto.OembedResponseDto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,21 +10,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 @Service
 public class EmbedService {
 
-    public Map<String, Object> getOembedResponse(String url) throws ParseException, URISyntaxException {
+    public OembedResponseDto getOembedResponse(String url) throws ParseException, URISyntaxException {
         String urlHost = getUrlHost(url);
         JSONArray providers = getProviders();
         String endpointUrl = getEndpointUrl(urlHost, providers);
         String requestUrl = createRequestUrl(url, endpointUrl);
 
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> map = restTemplate.getForObject(requestUrl, Map.class);
+        OembedResponseDto oembedResponseDto = restTemplate.getForObject(requestUrl, OembedResponseDto.class);
 
-        return map;
+        return oembedResponseDto;
     }
 
     /**
@@ -73,6 +73,8 @@ public class EmbedService {
                 break;
             }
         }
+
+        // TODO : exception 처리
         return endpointUrl;
     }
 

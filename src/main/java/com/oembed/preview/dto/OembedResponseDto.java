@@ -1,10 +1,10 @@
 package com.oembed.preview.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class OembedResponseDto {
     String title;
     String author_name;
@@ -13,10 +13,10 @@ public class OembedResponseDto {
     int height;
     int width;
     String version;
-    String providerName;
-    String providerUrl;
-    int thumbnailHeight;
-    int thumbnailWidth;
-    String thumbnailUrl;
+    String provider_name;
+    String provider_url;
+    int thumbnail_height;
+    int thumbnail_width;
+    String thumbnail_url;
     String html;
 }

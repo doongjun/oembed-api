@@ -84,7 +84,7 @@ public class EmbedService {
             }
         }
 
-        if(endpointUrl == "") {
+        if(endpointUrl.equals("")) {
             throw new NotSupportedUrlException(HttpStatus.BAD_REQUEST, "지원하지 않는 URL 입니다.");
         }
         return endpointUrl;

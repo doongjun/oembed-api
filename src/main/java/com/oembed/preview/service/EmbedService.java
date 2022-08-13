@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -21,7 +20,9 @@ public class EmbedService {
         String endpointUrl = getEndpointUrl(urlHost, providers);
         String requestUrl = createRequestUrl(url, endpointUrl);
 
-        Map<String, Object> map = new HashMap<>();
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> map = restTemplate.getForObject(requestUrl, Map.class);
+
         return map;
     }
 
@@ -75,6 +76,12 @@ public class EmbedService {
         return endpointUrl;
     }
 
+    /**
+     * 요청 url 생성
+     * @param url
+     * @param endpointUrl
+     * @return
+     */
     private String createRequestUrl(String url, String endpointUrl) {
         if(endpointUrl.endsWith("{format}")) {
             endpointUrl = endpointUrl.substring(0, endpointUrl.lastIndexOf("{")) + "json";

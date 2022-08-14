@@ -1,6 +1,5 @@
 package com.oembed.preview.controller;
 
-import com.oembed.preview.service.EmbedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

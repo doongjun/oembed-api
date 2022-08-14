@@ -42,9 +42,12 @@ public class EmbedService {
      * @return
      * @throws URISyntaxException
      */
-    private String getUrlHost(String paramUrl) throws URISyntaxException {
+    private String getUrlHost(String paramUrl) throws URISyntaxException, NotSupportedUrlException {
         URI uri = new URI(paramUrl);
         String host = uri.getHost();
+        if(host == null) {
+            throw new NotSupportedUrlException(HttpStatus.BAD_REQUEST, "잘못된 URL 형식입니다.");
+        }
         if (host.startsWith("www.")) {
             host = host.substring(4);
         }

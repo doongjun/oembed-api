@@ -15,6 +15,8 @@
                     <button class="btn btn-outline-secondary" type="button" onclick="search()">확인</button>
                 </div>
             </div>
+            <section id="container">
+            </section>
         </div>
     </div>
     <div th:replace="fragments/footer :: footer" />
@@ -22,17 +24,58 @@
 </body>
 <script type="text/javascript">
     function search() {
-        var url=$("#input_url").val();
-        var data = {
+        let url=$("#input_url").val();
+        if(url == '') {
+            alert("링크를 입력해주십시오.");
+            $("#input_url").focus();
+            return false;
+        }
+
+        let data = {
             "url" : url
         };
         $.ajax({
             url: "/api/oembed",
             data: data,
-            type: "GET"
-        }).done(function (result) {
-            console.log(result);
+            type: "GET",
+            success : function (data){
+                draw(data);
+            },
+            error : function (data){
+                $('#container').empty();
+                let msg = data.responseJSON.message;
+                alert(msg);
+                $("#input_url").focus();
+            }
         });
+    }
+
+    function draw(data) {
+        $('#container').empty();
+        let str = "";
+        str += "<div id='containerDiv'>"
+        str += "<div class='contentDiv'>" + "<div class='column'>title</div>" + "<div id='title' class='value'>" + data.title + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>type</div>" + "<div class='value'>" + data.type + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>version</div>" + "<div class='value'>" + data.version + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>provider_name</div>" + "<div class='value'>" + data.provider_name + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>provider_url</div>" + "<div class='value'><a href='" + data.provider_url + "'>" + data.provider_url + "</a></div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>author_name</div>" + "<div class='value'>" + data.author_name + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>author_url</div>" + "<div class='value'><a href='" + data.author_url + "'>" + data.author_url + "</a></div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>is_plus</div>" + "<div class='value'>" + data.is_plus + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>html<br/>(" + data.width + "/" + data.height + ")</div>" + "<div class='value'>" + "<xmp>" + data.html + "</xmp>" + data.html + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>width</div>" + "<div class='value'>" + data.width + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>height</div>" + "<div class='value'>" + data.height + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>duration</div>" + "<div class='value'>" + data.duration + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>description</div>" + "<div class='value'>" + data.description + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>thumbnail_url<br/>(" + data.thumbnail_width + "x" + data.thumbnail_height + ")</div>" + "<div class='value'>" + "<a href='" + data.thumbnail_url + "'>" + data.thumbnail_url + "</a>" + "<img src='" +data.thumbnail_url+ "'/>" + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>thumbnail_width</div>" + "<div class='value'>" + data.thumbnail_width + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>thumbnail_height</div>" + "<div class='value'>" + data.thumbnail_height + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>thubmnail_url_with_play_button</div>" + "<div class='value'>" + "<a href='" + data.thumbnail_url_with_play_button + "'>" + data.thumbnail_url_with_play_button + "</a>" + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>upload_date</div>" + "<div class='value'>" + data.upload_date + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>video_id</div>" + "<div class='value'>" + data.video_id + "</div>" + "</div>"
+        str += "<div class='contentDiv'>" + "<div class='column'>uri</div>" + "<div class='value'>" + data.uri + "</div>" + "</div>"
+        str += "</div>"
+        $('#container').append(str);
     }
 </script>
 </html>

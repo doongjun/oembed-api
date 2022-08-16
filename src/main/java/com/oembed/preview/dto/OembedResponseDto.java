@@ -13,7 +13,7 @@ public class OembedResponseDto {
     int height;
     int width;
     int duration;
-    private String description;
+    String description;
     String version;
     String provider_name;
     String provider_url;
